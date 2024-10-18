@@ -1,0 +1,79 @@
+variable        rng string gaussian
+variable        seed string 198098
+variable        temp string 1.0
+variable        gamma_t_1 string 3.0
+variable        gamma_t_2 string 3.0
+variable        gamma_t_3 string 3.0
+variable        gamma_r_1 string 1.0
+variable        gamma_r_2 string 1.0
+variable        gamma_r_3 string 1.0
+variable        params string ${rng}_${temp}_${gamma_r_1}_${gamma_r_2}_${gamma_r_3}_${gamma_t_1}_${gamma_t_2}_${gamma_t_3}
+
+units           lj
+atom_style      hybrid dipole ellipsoid bond
+dimension       3
+boundary 	p p p 
+
+
+variable eps_LJ equal 1.0
+variable sig_LJ equal 2.5
+variable K_fene equal 30.0
+variable R0_fene equal 1.8
+variable eps_fene equal 1.0
+variable sig_fene equal 1.0
+
+
+pair_style	lj/cut 2.5
+special_bonds fene
+bond_style	fene
+read_data MP60.data
+
+pair_coeff 1 1 ${eps_LJ} ${sig_LJ}
+bond_coeff 1 ${K_fene} ${R0_fene} ${eps_fene} ${sig_fene}
+
+
+mass            * 1.0
+set             type * shape 1.0 1.0 1.0
+set             type  * dipole/random ${seed} 1.0
+set             type * quat/random ${seed}
+velocity        all create 1.0 1 loop geom
+
+group sphere_start id 1 3 9 10 11 12
+group sphere_end id 41 42 43 44 57 60
+
+neighbor        1.0 bin
+comm_modify 	cutoff 10 
+neigh_modify    every 1 delay 1 check yes
+
+fix step all brownian/asphere ${temp} ${seed} rng ${rng} &
+            gamma_r_eigen ${gamma_r_1} ${gamma_r_2} ${gamma_r_3} &
+            gamma_t_eigen ${gamma_t_1} ${gamma_t_2} ${gamma_t_3} &
+            dipole 1.0 0.0 0.0
+
+# Output these variables in the thermo output
+thermo_style custom step pe press vol density
+
+timestep 0.0001
+thermo 5000
+
+variable x1 equal xcm(sphere_start,x)
+variable x2 equal xcm(sphere_end,x)
+variable delta_x equal (v_x1-v_x2)^2
+variable y1 equal xcm(sphere_start,y)
+variable y2 equal xcm(sphere_end,y)
+variable delta_y equal (v_y1-v_y2)^2
+variable z1 equal xcm(sphere_start,z)
+variable z2 equal xcm(sphere_end,z)
+variable delta_z equal (v_z1-v_z2)^2
+variable sumCM equal (v_delta_x+v_delta_y+v_delta_z)
+variable Dend equal sqrt(v_sumCM)
+fix myat5 all ave/time 1 1 10 v_Dend file end-to-end-distance.dat
+
+compute whatBond all property/local btype batom1 batom2
+compute myBond all bond/local dist engpot force
+dump myDump all local 500 bond_dump.txt index c_whatBond[*] c_myBond[*]
+dump traj all custom 500 dump.lammpstrj id type x y z
+
+run 50000000
+
+write_data MP60_eq.data
