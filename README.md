@@ -1,7 +1,7 @@
 
 # MP60 Simulation Guide
 
-Welcome to the MP60 simulation repository! This repository contains all the files and instructions necessary to run and visualize simulations of an MetaPaprticle60 molecule an seen in doi.org/10.1063/5.0232274
+Welcome to the MP60 simulation repository! This repository contains all the files and instructions necessary to run and visualize simulations of a MetaParticle60 molecule an seen in doi.org/10.1063/5.0232274
 
 ---
 
