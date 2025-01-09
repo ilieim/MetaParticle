@@ -62,3 +62,4 @@ To visualize the simulation in **Ovito**, follow these steps:
 ---
 
 Enjoy running and analyzing your MP60 simulations! 😊
+![Mp60](./MP60.png)
