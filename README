@@ -1,26 +1,64 @@
-Note: You will need specific LAMMPS packages to run the simulation. Refer to the file 'Compile_Correct_LAMMPS.sh' for instructions on how to compile LAMMPS properly. If you need any support, you can contact m.paesani@uva.nl.
----------------
 
-Inside the folder, you will find two important files required to run the simulation:
+# MP60 Simulation Guide
 
-1) MP60.data
-This file contains the position and information about individual bead positions and bond connections. You can visualise this system using your preferred visualizer, such as Ovito, VMD, or PyMol.
+Welcome to the MP60 simulation repository! This repository contains all the files and instructions necessary to run and visualize simulations of an MP60 molecule.
 
-2) MP60_Eq.lammps
-This file contains the input necessary to run the simulation of one MP60 molecule in a box with implicit solvent.
+---
 
-To run the simulation, simply use the following command:
+## Prerequisites
 
+Before running the simulation, ensure you have **specific LAMMPS packages** installed. Follow the instructions in the [`Compile_Correct_LAMMPS.sh`](./Compile_Correct_LAMMPS.sh) file to compile LAMMPS properly. 
 
-lmp -in MP60_Eq.lammps
+If you need support, feel free to reach out to:  
+📧 **m.paesani@uva.nl**
 
+---
 
-A full run should last around 10 minutes and occupy in total around 700 mb.
+## Files Included in This Repository
 
+### 1. `MP60.data`
+- **Description**: This file contains the initial positions of individual beads and bond connection information.  
+- **Usage**: Use your preferred visualization tool (e.g., **Ovito**, **VMD**, or **PyMol**) to inspect the molecular structure.
 
------
-The file Ovito_Bond_Presets is an image with the corrects presets to load bond information in the correct order. 
------
-dump.lammpstrj contains the whole particles trajectory and bonds.txt contains only the bonds information for the whole trajectory. The file end-to-end-distance.dat contains the distance between the center of mass of two opposite hexagons. 
------
-In Ovito, you can first import the 'dump.lammpstrj' file to visualise particle motion. Then, you can add the 'Load Trajectory' modification and load the bonds using the 'bonds.txt' file. The correct preset can be found in the PNG file 'Ovito_Bond_Presets'.
+### 2. `MP60_Eq.lammps`
+- **Description**: The input file to run the simulation of one MP60 molecule in a box with implicit solvent.  
+- **Run Command**:
+  ```bash
+  lmp -in MP60_Eq.lammps
+  ```
+- **Performance**: A full run should take approximately **10 minutes** and require about **700 MB** of storage.
+
+### 3. `dump.lammpstrj`
+- **Description**: Contains the complete particle trajectory.  
+- **Visualization**: Import this file into Ovito or your chosen tool to visualize particle motion.
+
+### 4. `bonds.txt`
+- **Description**: Contains bond information for the entire trajectory.  
+- **Visualization**: Use this file with Ovito's "Load Trajectory" modification.
+
+### 5. `end-to-end-distance.dat`
+- **Description**: Logs the distance between the centers of mass of two opposite hexagons throughout the simulation.
+
+### 6. `Ovito_Bond_Presets.png`
+- **Description**: A helpful image showing the correct settings for loading bond information into Ovito.  
+  ![Ovito Bond Presets](./Ovito_Bond_Presets.png)
+
+---
+
+## Visualization with Ovito
+
+To visualize the simulation in **Ovito**, follow these steps:
+
+1. Import the `dump.lammpstrj` file to visualize particle motion.
+2. Add the **"Load Trajectory"** modification and load `bonds.txt` for bond information.
+3. Apply the bond settings using the provided `Ovito_Bond_Presets.png`.
+
+---
+
+## Additional Notes
+- Ensure that LAMMPS is compiled correctly before running the simulation. Refer to the `Compile_Correct_LAMMPS.sh` script.
+- For optimal visualization, use Ovito and load the bond information as described above.
+
+---
+
+Enjoy running and analyzing your MP60 simulations! 😊
