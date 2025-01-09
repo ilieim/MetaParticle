@@ -1,5 +1,5 @@
 
-# MP60 Simulation Guide
+# MP60 Simulation Guide ![MP60](./MP60.png)
 
 Welcome to the MP60 simulation repository! This repository contains all the files and instructions necessary to run and visualize simulations of an MP60 molecule.
 
